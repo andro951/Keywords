@@ -11,11 +11,10 @@ using namespace std;
 
 int main()
 {
-	srand(static_cast<unsigned int>(time(0))); //Uses the current date and time as a seed for rand().
 	enum constants { KEYWORD, HINT, NUM_FIELDS_CONSTANTS };
 	const string KEYWORDS[][NUM_FIELDS_CONSTANTS] =
 	{
-		{ "ostrich", "Hint: Become one with the sand.;asldkdhf;slkfas;ldkhg;lshg;sda;sdhg;lhsag;dshg;ahg;dshg;dshg;ldsgg;ahg;lahg;lsajhg;ajkhg;ajkshdg;jlkashdg;jahsdg;kjhsg;jkhasd;kjgh;ajksdhg;jkshdg;jkhsad;glkjhsa;lkjdhg;lkjsha;glkjhsa;kdljhg;sajlkhdg;jksahg;lkhsad;lgkhsd;lkgh;dslahg;lkashdg;lakjshdgggggggggjjjjjjksssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss" },
+		{ "ostrich", "Hint: Become one with the sand." },
 		{ "ember", "Hint: Just a wee flame.  Nothing to fear." },
 		{ "odor", "Hint: You can pass through, but you cannot open." },
 		{ "opt", "Hint: Choose carefully now." },
@@ -24,13 +23,13 @@ int main()
 		{ "torment", "Hint: Dont   yourself over this." },
 		{ "friction", "Hint: Try putting your hands together for some inspiration." },
 		{ "fester", "Hint: You better solve this one before it gets worse." },
-		{ "supercalifragilisticexpialidocious", "Hint: The sound of it is something quite atrocious.umfkllsa;lkjs;dfja;slidjg;laijg;oihsad;oiggha;oijg;oaisg;osaidhhg;oaishg;osiadhg;oisahdg;oiashg;oihsasdg;ioh" },
+		{ "supercalifragilisticexpialidocious", "Hint: The sound of it is something quite atrocious." },
 		{ "hint",  },
 		{ "skip", "You might want to skip this one..." },
 		{ "help", "You are helpless." }
 	};
 	
-	cout << "initializing Keywords...";
+	cout << "initializing Keywords...\n";
 
 	bool repeatProgram = false;
 	/*
@@ -44,20 +43,22 @@ int main()
 	do //(repeatProgram)
 	{
 		cout << "===============================================================\n";
-		int randomKeywordNumber = rand() % (sizeof KEYWORDS / sizeof KEYWORDS[0]); //Choose a random keyword number.
-		string randomKeyword = KEYWORDS[randomKeywordNumber][KEYWORD];
-		string temporaryKeyword = randomKeyword;
-		string scrambledKeyword = "";
-		for (int i = 0; temporaryKeyword.length(); i++)
+		cout << "You may enter \"hint\" to recieve a hint, \"skip\" to recieve a new scrambled word, or \"help\" to re-display the scrambled word and this message.\n";
+		const int WORDS_TO_GUESS = 3;
+		for (int wordsRemaining = WORDS_TO_GUESS; wordsRemaining; wordsRemaining--)
 		{
-			int randomLetter = rand() % temporaryKeyword.length();
-			scrambledKeyword += temporaryKeyword[randomLetter];
-			temporaryKeyword.erase(randomLetter, 1);
-		}
-		for (int wordsRemaining = 2; wordsRemaining; wordsRemaining--)
-		{
-			cout << "Scrambled word #" << 3 - wordsRemaining << ": " << scrambledKeyword << "\n"
-				 << "You may enter \"hint\" to recieve a hint, \"skip\" to recieve a new scrambled word, or \"help\" to re-display the scrambled word and this message.\n";
+			srand(static_cast<unsigned int>(time(0))); //Uses the current date and time as a seed for rand().
+			int randomKeywordNumber = rand() % (sizeof KEYWORDS / sizeof KEYWORDS[0]); //Choose a random keyword number.
+			string randomKeyword = KEYWORDS[randomKeywordNumber][KEYWORD];
+			string temporaryKeyword = randomKeyword;
+			string scrambledKeyword = "";
+			for (int i = 0; temporaryKeyword.length(); i++)
+			{
+				int randomLetter = rand() % temporaryKeyword.length();
+				scrambledKeyword += temporaryKeyword[randomLetter];
+				temporaryKeyword.erase(randomLetter, 1);
+			}
+			cout << "Scrambled word #" << WORDS_TO_GUESS + 1 - wordsRemaining << ": " << scrambledKeyword << "\n";
 
 			bool correct = false;
 
@@ -69,18 +70,24 @@ int main()
 				if (guess == randomKeyword)
 				{
 					correct = true;
+					cout << "Correct!\n"
+						 << "-\n";
 				}
 				else if (guess == "hint")
 				{
-					cout << KEYWORDS[randomKeywordNumber][HINT] << "\n";
+					cout << "-\n"
+						 << KEYWORDS[randomKeywordNumber][HINT] << "\n";
 				}
 				else if (guess == "help")
 				{
-					cout << "Scrambled word #" << 3 - wordsRemaining << ": " << scrambledKeyword << "\n"
-						 << "You may enter \"hint\" to recieve a hint or \"skip\" to recieve a new scrambled word.";
+					cout << "-\n"
+						 << "You may enter \"hint\" to recieve a hint, \"skip\" to recieve a new scrambled word, or \"help\" to re-display the scrambled word and this message.\n"
+						 << "Scrambled word #" << WORDS_TO_GUESS + 1 - wordsRemaining << ": " << scrambledKeyword << "\n";
+						 
 				}
 				else if (guess == "skip")
 				{
+					srand(static_cast<unsigned int>(time(0))); //Uses the current date and time as a seed for rand().
 					int randomKeywordNumber = rand() % (sizeof KEYWORDS / sizeof KEYWORDS[0]); //Choose a random keyword number.
 					string randomKeyword = KEYWORDS[randomKeywordNumber][KEYWORD];
 					string temporaryKeyword = randomKeyword;
@@ -91,11 +98,13 @@ int main()
 						scrambledKeyword += temporaryKeyword[randomLetter];
 						temporaryKeyword.erase(randomLetter, 1);
 					}
-					cout << "New scrambled word #" << 3 - wordsRemaining << ": " << scrambledKeyword << "\n";
+					cout << "-\n"
+						 << "New scrambled word #" << WORDS_TO_GUESS + 1 - wordsRemaining << ": " << scrambledKeyword << "\n";
 				}
 				else
 				{
-					cout << "Incorrect.\n";
+					cout << "Incorrect.\n"
+						 << "-\n";
 				}
 			} while (!correct);
 		}
@@ -148,3 +157,7 @@ int main()
 	=================================================================================================================================================
 	*/
 }
+
+
+
+//Prevent the same keyword being used if it has been guessed correctly.   resets every program run.  Erase that keyword when correct.  re-initialize the whole list of keywords each time the program runs.
