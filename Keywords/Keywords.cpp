@@ -161,3 +161,4 @@ int main()
 
 
 //Prevent the same keyword being used if it has been guessed correctly.   resets every program run.  Erase that keyword when correct.  re-initialize the whole list of keywords each time the program runs.
+//If the scrambled word == the orrigional word, rescramble it.
